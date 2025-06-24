@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocidad lectora</title>
+    <style>
+        body {
+            background-color: #001bff;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #resultado {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 5px;
+            display: none;
+        }
+        #cuestionario {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #444;
+            border-radius: 5px;
+            display: none;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            height: auto;
+        }
+        .pregunta {
+            margin-bottom: 15px;
+        }
+        .opciones {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Velocidad Lectora</h1>
+        <p>Esta herramienta te ayudará a medir tu velocidad de lectura. Selecciona un cuento para comenzar.</p>
+        
+        <button onclick="iniciarPrueba()">Comenzar Prueba</button>
+        
+        <div id="cuento"></div>
+        <div id="controles" style="display: none;">
+            <button id="btnInicio" onclick="empezarLectura()">Empezar a leer</button>
+            <button id="btnFin" onclick="terminarLectura()" disabled>Terminar lectura</button>
+        </div>
+        
+        <div id="resultado"></div>
+        <div id="cuestionario"></div>
+        
+        <img src="https://www.shutterstock.com/image-vector/cute-little-kids-boys-girls-260nw-2426509835.jpg" alt="Niños leyendo">
+    </div>
+
+    <script>
+        const cuentos = [
+            {
+                'titulo': "Caperucita Roja",
+                'texto': `Había una vez una niña llamada Caperucita Roja, que vivía en un bosque con su madre. Un día, su madre le dijo: 
+Lleva esta cesta con pan y miel a tu abuela. Está enferma y esto la animará. No hables con extraños y ve directo por el camino.
+Caperucita Roja asintió y partió. En el bosque, un lobo la vio y le preguntó:
+—¿Adónde vas, niña bonita?
+—A casa de mi abuela, al otro lado del bosque —respondió ella, olvidando la advertencia.
+El lobo, astuto, corrió a la casa de la abuela, llamó a la puerta y fingió ser Caperucita. La abuela abrió y él la encerró en el armario. Luego, se puso su gorro y se metió en la cama.
+Cuando Caperucita llegó, notó algo raro:
+—Abuela, ¡qué ojos más grandes tienes!
+—Son para verte mejor —dijo el lobo.
+—¡Y qué orejas más grandes!
+—Son para oírte mejor.
+—¡Y qué dientes más grandes!
+—¡Son para comerte mejor! —rugió el lobo, saltando de la cama.
+En ese momento, un leñador que escuchó los gritos entró con su hacha y asustó al lobo, que huyó para nunca volver. La abuela salió del armario y abrazó a Caperucita, quien prometió nunca más desobedecer.`,
+                'palabras': 250,
+                'preguntas': [
+                    {
+                        'pregunta': '¿Qué alimentos llevaba Caperucita en su cesta?',
+                        'opciones': ['Manzanas y peras', 'Pan y miel', 'Queso y vino', 'Galletas y chocolate'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Qué advertencia le dio su madre?',
+                        'opciones': ['Que no se mojara', 'Que no hablara con extraños', 'Que corriera rápido', 'Que cantara fuerte'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Dónde escondió el lobo a la abuela?',
+                        'opciones': ['En el sótano', 'En el armario', 'En el ático', 'En el jardín'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Quién rescató a Caperucita?',
+                        'opciones': ['Un policía', 'Un leñador', 'Un cazador', 'Su padre'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Qué prometió Caperucita al final?',
+                        'opciones': ['Comer más verduras', 'Nunca más desobedecer', 'Visitar más a su abuela', 'Aprender a cocinar'],
+                        'respuesta': 1
+                    }
+                ]
+            },
+            {
+                'titulo': "La Gallina de los Huevos de Oro",
+                'texto': `Había una vez un granjero pobre que vivía con su esposa en una pequeña cabaña. Un día, su gallina, la más gordita del corral, puso un huevo brillante. Al recogerlo, el granjero casi se cae de espaldas: ¡era de oro puro!
+—¡Mira, mujer! —gritó emocionado—. ¡Nuestra gallina es mágica!
+Al día siguiente, la gallina puso otro huevo de oro, y así durante una semana. El granjero y su esposa vendieron los huevos y se llenaron de lujos: compraron vestidos, comida fina y hasta una carreta nueva.
+Pero el granjero, ávido de riqueza, empezó a impacientarse:
+—¿Por qué esperar a que ponga un huevo cada día? ¡Si la abrimos, sacaremos todo el oro de una vez!
+Su esposa trató de detenerlo:
+—¡No seas tonto! Si la matas, no tendremos más oro.
+Pero el granjero no escuchó. Tomó un cuchillo, mató a la gallina y la abrió... solo para descubrir que por dentro era igual que todas las demás. No había oro, ni joyas, ni nada.
+Al día siguiente, sin gallina y sin huevos, el granjero y su esposa volvieron a ser pobres. El hombre lloró de arrepentimiento, pero ya era tarde.
+Moraleja: La avaricia rompe el saco. Quien todo lo quiere, todo lo pierde.`,
+                'palabras': 250,
+                'preguntas': [
+                    {
+                        'pregunta': '¿Qué ponía la gallina que sorprendió al granjero?',
+                        'opciones': ['Huevos de chocolate', 'Huevos de oro', 'Huevos gigantes', 'Huevos de colores'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Qué compraron con el dinero de los huevos?',
+                        'opciones': ['Una casa nueva', 'Vestidos y comida fina', 'Un coche', 'Un televisor'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Por qué decidió el granjero matar a la gallina?',
+                        'opciones': ['Porque estaba enferma', 'Para conseguir todo el oro de una vez', 'Porque ya no ponía huevos', 'Porque su esposa se lo pidió'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Qué encontró dentro de la gallina?',
+                        'opciones': ['Muchas monedas de oro', 'Nada especial', 'Un mapa del tesoro', 'Un diamante'],
+                        'respuesta': 1
+                    },
+                    {
+                        'pregunta': '¿Cuál es la moraleja de la historia?',
+                        'opciones': ['No hay que confiar en los animales', 'La avaricia rompe el saco', 'El oro no da la felicidad', 'Hay que compartir lo que se tiene'],
+                        'respuesta': 1
+                    }
+                ]
+            }
+        ];
+
+        let cuentoActual;
+        let inicioTiempo;
+        let finTiempo;
+        let respuestasCorrectas = 0;
+
+        function iniciarPrueba() {
+            respuestasCorrectas = 0;
+            // Seleccionar un cuento al azar
+            cuentoActual = cuentos[Math.floor(Math.random() * cuentos.length)];
+            
+            // Mostrar el cuento
+            document.getElementById('cuento').innerHTML = `
+                <h2>${cuentoActual.titulo}</h2>
+                <p>${cuentoActual.texto.replace(/\n/g, '<br>')}</p>
+                <p><strong>Palabras:</strong> ${cuentoActual.palabras}</p>
+            `;
+            
+            // Mostrar controles
+            document.getElementById('controles').style.display = 'block';
+            document.getElementById('btnFin').disabled = true;
+            
+            // Ocultar resultado anterior
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('cuestionario').style.display = 'none';
+        }
+
+        function empezarLectura() {
+            inicioTiempo = new Date();
+            document.getElementById('btnInicio').disabled = true;
+            document.getElementById('btnFin').disabled = false;
+            alert("¡Empieza a leer ahora! Presiona el botón 'Terminar lectura' cuando hayas terminado.");
+        }
+
+        function terminarLectura() {
+            finTiempo = new Date();
+            document.getElementById('btnInicio').disabled = false;
+            document.getElementById('btnFin').disabled = true;
+            
+            calcularResultados();
+        }
+
+        function verificarRespuestas() {
+            const preguntas = cuentoActual.preguntas;
+            respuestasCorrectas = 0;
+            
+            for (let i = 0; i < preguntas.length; i++) {
+                const selected = document.querySelector(`input[name="pregunta${i}"]:checked`);
+                if (selected && parseInt(selected.value) === preguntas[i].respuesta) {
+                    respuestasCorrectas++;
+                }
+            }
+            
+            const porcentaje = (respuestasCorrectas / preguntas.length) * 100;
+            let nivelComprension = "";
+            
+            if (porcentaje >= 80) {
+                nivelComprension = "Excelente comprensión lectora";
+            } else if (porcentaje >= 60) {
+                nivelComprension = "Buena comprensión lectora";
+            } else if (porcentaje >= 40) {
+                nivelComprension = "Comprensión lectora regular";
+            } else {
+                nivelComprension = "Comprensión lectora baja";
+            }
+            
+            document.getElementById('resultado').innerHTML += `
+                <h3>Resultados del Cuestionario</h3>
+                <p><strong>Respuestas correctas:</strong> ${respuestasCorrectas} de ${preguntas.length}</p>
+                <p><strong>Porcentaje de aciertos:</strong> ${porcentaje.toFixed(0)}%</p>
+                <p><strong>Nivel de comprensión:</strong> ${nivelComprension}</p>
+            `;
+        }
+
+        function calcularResultados() {
+            const tiempoSegundos = (finTiempo - inicioTiempo) / 1000;
+            const velocidad = (cuentoActual.palabras / (tiempoSegundos / 60)).toFixed(0);
+            
+            let nivel = "";
+            if (velocidad < 150) {
+                nivel = "Lector básico";
+            } else if (velocidad >= 150 && velocidad < 250) {
+                nivel = "Lector intermedio";
+            } else {
+                nivel = "Lector avanzado";
+            }
+            
+            document.getElementById('resultado').innerHTML = `
+                <h3>Resultados de Velocidad</h3>
+                <p><strong>Tiempo de lectura:</strong> ${tiempoSegundos.toFixed(1)} segundos</p>
+                <p><strong>Velocidad lectora:</strong> ${velocidad} palabras por minuto</p>
+                <p><strong>Nivel:</strong> ${nivel}</p>
+            `;
+            document.getElementById('resultado').style.display = 'block';
+            
+            // Mostrar cuestionario
+            let preguntasHTML = '<h3>Cuestionario de Comprensión</h3>';
+            cuentoActual.preguntas.forEach((pregunta, index) => {
+                preguntasHTML += `
+                    <div class="pregunta">
+                        <p>${index + 1}. ${pregunta.pregunta}</p>
+                        <div class="opciones">
+                            ${pregunta.opciones.map((opcion, i) => `
+                                <label>
+                                    <input type="radio" name="pregunta${index}" value="${i}">
+                                    ${opcion}
+                                </label><br>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            preguntasHTML += '<button onclick="verificarRespuestas()">Verificar respuestas</button>';
+            document.getElementById('cuestionario').innerHTML = preguntasHTML;
+            document.getElementById('cuestionario').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
